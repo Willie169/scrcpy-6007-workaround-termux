@@ -14,5 +14,7 @@ jobs:
           cd termux-packages
           ./scripts/run-docker.sh
           ./scripts/run-docker.sh ./build-package.sh -I scrcpy
-          tree
-          find . -type f -name '*.deb' -print
+      - uses: actions/upload-artifact@v6
+        with:
+          name: scrcpy
+          path: termux-packages/output/scrcpy_*.deb
