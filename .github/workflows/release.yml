@@ -1,12 +1,12 @@
 name: Build
 
 on:
-  # schedule:
-  #   - cron: "0 */6 * * *"
-  # push:
-  #   paths:
-  #     - ".github/workflows/release.yml"
-  #     - "tag"
+  schedule:
+    - cron: "0 */6 * * *"
+  push:
+    paths:
+      - ".github/workflows/release.yml"
+      - "tag"
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          repository: Genymobile/scrcpy
+          repository: Willie169/scrcpy-6007-workaround
           fetch-depth: 0
 
       - name: Tag
@@ -49,14 +49,14 @@ jobs:
             exit 0
           else
             echo "changed=1" >> "$GITHUB_OUTPUT"
-            # echo "$VERSION" > tag
-            # git config user.name "github-actions[bot]"
-            # git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            # git add -A
-            # git commit -m "$VERSION"
-            # git push origin main
-            # git tag -a "$VERSION" -m "$VERSION"
-            # git push origin "$VERSION"
+            echo "$VERSION" > tag
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "$VERSION"
+            git push origin main
+            git tag -a "$VERSION" -m "$VERSION"
+            git push origin "$VERSION"
           fi
 
   build:
@@ -75,12 +75,11 @@ jobs:
           cd termux-packages
           ./scripts/run-docker.sh
           ./scripts/run-docker.sh ./build-package.sh -I scrcpy
-          ls output/
-      # - uses: softprops/action-gh-release@v3
-      #   with:
-      #     tag_name: ${{ env.VERSION }}
-      #     name: ${{ env.VERSION }}
-      #     files: termux-packages/output/scrcpy_*.deb
+      - uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          files: termux-packages/output/scrcpy_*.deb
       - uses: geekyeggo/delete-artifact@v6
         with:
           name: "*"
