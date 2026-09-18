@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Prepare
+      - name: Build scrcpy
         run: |
           ./patch.sh
           cd termux-packages
           ./scripts/run-docker.sh
-      - name: Build scrcpy
-        run: ./scripts/run-docker.sh ./build-package.sh -I scrcpy
+          ./scripts/run-docker.sh ./build-package.sh -I scrcpy
