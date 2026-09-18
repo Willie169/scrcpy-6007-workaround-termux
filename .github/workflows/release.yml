@@ -75,6 +75,7 @@ jobs:
           cd termux-packages
           ./scripts/run-docker.sh
           ./scripts/run-docker.sh ./build-package.sh -I scrcpy
+          ls output/
       # - uses: softprops/action-gh-release@v3
       #   with:
       #     tag_name: ${{ env.VERSION }}
