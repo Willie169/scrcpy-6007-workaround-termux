@@ -1,30 +1,6 @@
-TERMUX_PKG_HOMEPAGE=https://github.com/Genymobile/scrcpy
-TERMUX_PKG_DESCRIPTION="Provides display and control of Android devices connected via USB or over TCP/IP"
-TERMUX_PKG_LICENSE="Apache-2.0"
-TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="4.1"
-TERMUX_PKG_SRCURL="https://github.com/Genymobile/scrcpy/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz"
-TERMUX_PKG_SHA256=537b2ade623cb94b6edddfa5c61bf0b0af21484aa8365ea2531b686ea573249a
-TERMUX_PKG_DEPENDS="android-tools, ffmpeg, libusb, sdl3"
-TERMUX_PKG_ANTI_BUILD_DEPENDS="android-tools"
-TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
--Dprebuilt_server=$TERMUX_PKG_SRCDIR/scrcpy-server-v${TERMUX_PKG_VERSION}
-"
+#!/usr/bin/env bash
 
-termux_step_post_get_source() {
-  sed -Ei 's#^([[:space:]]*)(\|[[:space:]]*VIRTUAL_DISPLAY_FLAG_ALWAYS_UNLOCKED)#\1// \2#' server/src/main/java/com/genymobile/scrcpy/video/NewDisplayCapture.java
-	local scrcpy_server="scrcpy-server-v${TERMUX_PKG_VERSION}"
-	local url="https://github.com/Genymobile/scrcpy/releases/download/v${TERMUX_PKG_VERSION}/${scrcpy_server}"
-	termux_download "${url}" "$(basename "${url}")" SKIP_CHECKSUM
-
-	# Ensure the `scrcpy-server-v*` is an Android package.
-	case "$(file -b --mime-type "$(basename "$TERMUX_PKG_SRCDIR/${scrcpy_server}")")" in
-		"application/vnd.android.package-archive");;
-		*)
-			file -b "$(basename "${scrcpy_server}")" >&2
-			file --mime-type "$(basename "${scrcpy_server}")" >&2
-			termux_error_exit "$(basename "${scrcpy_server}") doesn't seem to be an Android APK package."
-		;;
-	esac
-}
+# shellcheck disable=2034
+PATCH="sed -Ei 's#^([[:space:]]*)(\|[[:space:]]*VIRTUAL_DISPLAY_FLAG_ALWAYS_UNLOCKED)#\1// \2#' server/src/main/java/com/genymobile/scrcpy/video/NewDisplayCapture.java"
+git clone --depth=1 https://github.com/termux/termux-packages.git
+perl -0pi -E 's/(termux_step_post_get_source\(\) {\n)([ \t]*)/$1$2$ENV{PATCH}\n$2/' termux-packages/x11-packages/scrcpy/build.sh

@@ -1,1 +1,0 @@
-https://github.com/termux/termux-packages/blob/master/x11-packages/scrcpy/build.sh
