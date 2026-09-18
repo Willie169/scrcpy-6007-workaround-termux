@@ -14,3 +14,5 @@ jobs:
           cd termux-packages
           ./scripts/run-docker.sh
           ./scripts/run-docker.sh ./build-package.sh -I scrcpy
+          tree
+          find . -type f -name '*.deb' -print
