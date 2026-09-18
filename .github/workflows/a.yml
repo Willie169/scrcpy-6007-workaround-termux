@@ -1,0 +1,20 @@
+name: aBuild
+
+on:
+  # schedule:
+  #   - cron: "0 */6 * * *"
+  # push:
+  #   paths:
+  #     - ".github/workflows/release.yml"
+  #     - "tag"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build scrcpy
+        run: |
+          ./patch.sh
+          cat termux-packages/x11-packages/scrcpy/build.sh
