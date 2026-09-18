@@ -1,6 +1,12 @@
 name: Build
 
 on:
+  schedule:
+    - cron: "0 */6 * * *"
+  push:
+    paths:
+      - ".github/workflows/release.yml"
+      - "tag"
   workflow_dispatch:
 
 jobs:
