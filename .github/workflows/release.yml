@@ -50,11 +50,11 @@ jobs:
           else
             echo "changed=1" >> "$GITHUB_OUTPUT"
             # echo "$VERSION" > tag
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A
-            git commit -m "$VERSION"
-            git push origin main
+            # git config user.name "github-actions[bot]"
+            # git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            # git add -A
+            # git commit -m "$VERSION"
+            # git push origin main
             # git tag -a "$VERSION" -m "$VERSION"
             # git push origin "$VERSION"
           fi
